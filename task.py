@@ -1,26 +1,45 @@
-#
-#Banking simulator. Write a code in python that simulates the banking system. 
-#The program should:
-# - be able to create new banks
-# - store client information in banks
-# - allow for cash input and withdrawal
-# - allow for money transfer from client to client
-#If you can think of any other features, you can add them.
-#This code shoud be runnable with 'python task.py'.
-#You don't need to use user input, just show me in the script that the structure of your code works.
-#If you have spare time you can implement: Command Line Interface, some kind of data storage, or even multiprocessing.
-#
-#Try to expand your implementation as best as you can. 
-#Think of as many features as you can, and try implementing them.
-#Make intelligent use of pythons syntactic sugar (overloading, iterators, generators, etc)
-#Most of all: CREATE GOOD, RELIABLE, READABLE CODE.
-#The goal of this task is for you to SHOW YOUR BEST python programming skills.
-#Impress everyone with your skills, show off with your code.
-#
-#Your program must be runnable with command "python task.py".
-#Show some usecases of your library in the code (print some things)
-#
-#When you are done upload this code to your github repository. 
-#
-#Delete these comments before commit!
-#Good luck.
+
+class Client:
+    def __init__(self,name, surname):
+        self.name = name
+        self.surname = surname
+        self.money = 0
+    
+    def input_cash(self, cash_to_input):
+        self.money = self.money + cash_to_input
+    
+    def withdraw_cash(self, cash_to_withdraw):
+        if self.money - cash_to_withdraw >= 0:
+            self.money = self.money - cash_to_withdraw
+            return 1
+        else:
+            print("Error : not enough money in your account")
+            return -1
+class Bank(Client):
+    def __init__(self, name):
+        self.name = name
+        self.client_list = []
+        
+
+    def add_client(self,new_client):
+        self.client_list.append(new_client)
+        
+    
+    def money_transfer(self, client_1, client_2, amount):
+        if client_1.withdraw_cash(amount):
+            client_2.input_cash(amount)
+    
+
+    
+    
+if __name__ == "__main__":
+
+    client_1 = Client("Jan","Kowalski")
+    client_2 = Client("Anna","Kowalska")
+    bank1 = Bank("Santander")
+    bank1.add_client(client_1)
+    bank1.add_client(client_2)
+    client_1.input_cash(200)
+    bank1.money_transfer(client_1,client_2,200)
+    print(client_1.money)
+    print(client_2.money)
